@@ -148,9 +148,11 @@ getätigt werden.
 | **Straight Flush**                    | Straße in einer Farbe                                                                                                  | 8♣ 9♣ 10♣ J♣ Q♣       | Höchste Karte                         |
 | **Royal Flush**                       | Straße in einer Farbe mit [Ass](https://de.wikipedia.org/wiki/Ass_\(Spielkarte\) "Ass (Spielkarte)") als höchste Karte | 10♦ J♦ Q♦ K♦ A♦       | Split Pot                             |
 ## Architektur und Core-Ablauf
-[Architektur](./architektur.drawio.svg)
+<img src="architektur.drawio.svg" alt="Mein Diagramm" width="100%">
+
 ## Datenmodelle
-[Datenmodelle](./datenmodelle.drawio.svg)
+<img src="datenmodelle.drawio.svg" alt="Mein Diagramm" width="100%">
+
 ## Entwicklungsreihenfolge
 1. Core
     1. Cards
