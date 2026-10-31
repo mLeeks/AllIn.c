@@ -155,13 +155,17 @@ getätigt werden.
 
 ## Entwicklungsreihenfolge
 1. Core
-    1. Cards
-    2. Player
-    3. Game
-    4. Betting
+    1. Cards (Deck, Card, Board)
+    2. Player (Player, PlayerState)
+    3. Game (GameConfig, Game, Phase, WinBy)
+       1. Spiel erstellen und Hände initialisieren
+    4. Betting (BettingState, GameAction)
     5. HandEvaluator
+        1. Pokerhände bewerten
     6. PotManager
-    7. GameView
+       1. Gewinne und Side-Pots verteilen
+    7. GameView (GameAction)
+        1. Spielzustand sicher für andere Komponenten bereitstellen
 2. Player
 3. KI
 4. Netzwerk
