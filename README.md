@@ -165,3 +165,6 @@ getätigt werden.
 2. Player
 3. KI
 4. Netzwerk
+
+## Dependencies
+### Libsodium (CSPRNG)
