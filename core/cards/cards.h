@@ -1,10 +1,10 @@
 #include <stddef.h>
 
 typedef enum {
-    SPADE,
-    HEART,
+    CLUB,
     DIAMOND,
-    CLUB
+    HEART,
+    SPADE
 } Suit;
 
 typedef enum {
@@ -46,9 +46,7 @@ void init_deck(Deck *deck);
 void shuffle(Deck *deck);
 //Fisher Yates Algorithm + CSPRNG (libsodium)
 
-Card* draw_one_card(Deck *deck);
+Card* draw_card(Deck *deck);
 
-Card* draw_two_cards(Deck *deck);
-
-void return_card(Card *card);
+Card* draw_n_cards(Deck *deck, size_t count);
 
