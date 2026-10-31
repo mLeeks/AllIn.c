@@ -23,22 +23,14 @@ void init_deck(Deck *deck) {
     deck->next_card = 0;
 }
 
-Card* draw_card(Deck *deck) {
-    if (deck->next_card >= 52)
-        return NULL;
+bool draw_n_cards(Deck *deck, Card *cards, size_t n) {
+    if (n == 0 || deck->next_card > 52 ||
+        n > 52 - deck->next_card)
+        return false;
 
-    Card *pCard = &deck->cards[deck->next_card];
-    deck->next_card++;
+    for (size_t i = 0; i < n; i++) {
+        cards[i] = deck->cards[deck->next_card++];
+    }
 
-    return pCard;
-}
-
-Card* draw_n_cards(Deck *deck, size_t n) {
-    if (n == 0 || n > 52 - deck->next_card)
-        return NULL;
-
-    Card *pCards = &deck->cards[deck->next_card];
-    deck->next_card += n;
-
-    return pCards;
+    return true;
 }

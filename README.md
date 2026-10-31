@@ -168,3 +168,4 @@ getätigt werden.
 
 ## Dependencies
 ### Libsodium (CSPRNG)
+### uuid-dev (UUIDv4 GEN)

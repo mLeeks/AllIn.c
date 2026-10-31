@@ -1,10 +1,12 @@
+#include <stdbool.h>
 #include <stddef.h>
 
 typedef enum {
     CLUB,
     DIAMOND,
     HEART,
-    SPADE
+    SPADE,
+    PLACEHOLDER,
 } Suit;
 
 typedef enum {
@@ -20,7 +22,7 @@ typedef enum {
     JACK,
     QUEEN,
     KING,
-    ACE
+    ACE,
 } Rank;
 
 typedef struct {
@@ -40,13 +42,27 @@ typedef struct {
     Card burn_cards[3];
 } Board;
 
+/**
+ * @brief Generiert alle Karten aus den Enums Suit und Rank
+ * @param deck
+ */
 void init_deck(Deck *deck);
-// Kartengeneration auf Basis der Kombination aus Rank und Suit Enum
 
+/**
+ * @brief Mischt die Karten in einem Deck
+ * Nutzt den Fisher Yates Algorithm mit einer CSPRNG (library: libsodium) Zufallsvariable
+ * @param deck
+ */
 void shuffle(Deck *deck);
-//Fisher Yates Algorithm + CSPRNG (libsodium)
 
-Card* draw_card(Deck *deck);
-
-Card* draw_n_cards(Deck *deck, size_t count);
+/**
+ * @brief Kopiert n Karten vom Deck in die cards
+ * @param deck
+ * @param cards
+ * @param n
+ * @return true, wenn erfolgreich.
+ * @return false, wenn die Parameter ungültig sind
+ *         oder nicht genügend Karten vorhanden sind.
+ */
+bool draw_n_cards(Deck *deck, Card *cards, size_t n);
 

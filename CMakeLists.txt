@@ -7,6 +7,8 @@ add_executable(AllIn_c main.c)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SODIUM REQUIRED IMPORTED_TARGET libsodium)
+
 target_link_libraries(AllIn_c PRIVATE PkgConfig::SODIUM)
+target_link_libraries(AllIn_c PRIVATE uuid)
 
 
