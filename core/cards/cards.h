@@ -48,12 +48,14 @@ typedef struct {
  */
 void init_deck(Deck *deck);
 
+void init_board(Board *board);
+
 /**
  * @brief Mischt die Karten in einem Deck
  * Nutzt den Fisher Yates Algorithm mit einer CSPRNG (library: libsodium) Zufallsvariable
  * @param deck
  */
-void shuffle(Deck *deck);
+void shuffle_deck(Deck *deck);
 
 /**
  * @brief Kopiert n Karten vom Deck in die cards

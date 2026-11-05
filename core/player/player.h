@@ -3,7 +3,13 @@
 
 #include "../cards/cards.h"
 #include <uuid/uuid.h>
+#include "../game/game.h"
 
+
+typedef enum {
+    ANTI_CLOCKWISE = -1,
+    CLOCKWISE = 1
+} Direction;
 
 typedef enum {
     ACTIVE,
@@ -30,10 +36,23 @@ typedef struct {
  * @param name
  * @param starting_chips
  */
-void init_player(Player *player, const char *name, int starting_chips);
+void init_player(GameConfig *config, Player *players);
+
+void init_players(GameConfig *config, Player *player, size_t num_players);
 
 /**
  * @brief Bereitet den Player für die nächste Hand vor.
  * @param player
  */
 void reset_player(Player *player);
+
+Player *get_random_dealer(Player *players, size_t num_players);
+
+Player *get_active_player(
+    Player *players,
+    size_t player_count,
+    Player *referencePlayer,
+    Direction direction
+);
+
+uint8_t get_active_player_count(Player *players, size_t num_players);

@@ -1,3 +1,4 @@
+#pragma once
 #include "../player/player.h"
 
 typedef enum {
@@ -19,3 +20,5 @@ typedef struct {
     Action type;
     int amount;
 } GameAction;
+
+void init_betting_state(GameConfig *config, BettingState *state);

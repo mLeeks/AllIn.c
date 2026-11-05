@@ -1,7 +1,8 @@
 #include "cards.h"
 #include <sodium.h>
 
-void shuffle(Deck *deck) {
+void shuffle_deck(Deck *deck) {
+    deck->next_card = 0;
     for (int i = 51; i > 0; i--) {
         int j = randombytes_uniform(i + 1);
 
@@ -21,6 +22,17 @@ void init_deck(Deck *deck) {
         }
     }
     deck->next_card = 0;
+}
+
+void init_board(Board *board) {
+    for (size_t i = 0; i < 4; i++) {
+        board->cards[i] = (Card){0};
+    }
+    board->count = 0;
+
+    for (size_t i = 0; i < 2; i++) {
+        board->burn_cards[i] = (Card){0};
+    }
 }
 
 bool draw_n_cards(Deck *deck, Card *cards, size_t n) {

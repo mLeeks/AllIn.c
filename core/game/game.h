@@ -17,6 +17,7 @@ typedef enum {
 } Phase;
 
 typedef enum {
+    NONE,
     BY_SHOWDOWN,
     BY_FOLD
 } Win;
@@ -41,8 +42,17 @@ typedef struct {
     Win win;
     Player *pDealer;
     Player *pCurrentPlayer;
+    Player *pStartingPlayer;
+    Player *sBlind;
+    Player *bBlind;
     GameConfig config;
 
 } Game;
 
-void init_game_config(GameConfig *game_config);
+void init_game(Game *game);
+
+void create_game(Game *game);
+void destroy_game(Game *game);
+void start_game(Game *game);
+
+void setup_flop(Game *game);
