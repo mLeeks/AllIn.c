@@ -3,14 +3,20 @@
 #include <stdio.h>
 
 static void setup_cards(Deck *deck, Player *players, uint8_t player_count) {
-    // TODO: Beim Texas Hold'em wird dagegen reihum jeweils eine Karte pro Spieler ausgeteilt,
-    // TODO: beginnend beim Small Blind. Danach folgt eine zweite Runde.
     for (uint8_t i = 0; i < player_count; i++) {
         if (players[i].state != ACTIVE && players[i].state != ALL_IN) {
             continue;
         }
 
-        draw_n_cards(deck, players[i].cards, 2);
+        draw_n_cards(&deck[0], players[i].cards, 1);
+    }
+
+    for (uint8_t i = 0; i < player_count; i++) {
+        if (players[i].state != ACTIVE && players[i].state != ALL_IN) {
+            continue;
+        }
+
+        draw_n_cards(&deck[1], players[i].cards, 1);
     }
 }
 
@@ -27,6 +33,21 @@ static void post_blind(Player *player, int amount) {
     }
 }
 
+static void heads_up(Game *game) {
+    if (game->bBlind->chips > 0) {
+        game->pDealer = game->bBlind;
+    }
+
+    game->sBlind = game->pDealer;
+
+    game->bBlind = get_active_player(
+        game->players,
+        game->player_count,
+        game->pDealer,
+        CLOCKWISE
+    );
+}
+
 void setup_flop(Game *game) {
     if (game->phase != PRE_FLOP) {
         printf("Error Code: %d\n", 1);
@@ -37,18 +58,7 @@ void setup_flop(Game *game) {
 
     if (get_active_player_count(game->players, game->player_count) == 2) {
         // Sonderfall: Heads Up
-        // TODO: Heads up logik beim ersten Übergang anpassen
-        Player *prev_sBlind = game->sBlind;
-        game->pDealer = get_active_player(game->players, game->player_count, game->pDealer, CLOCKWISE);
-        if (prev_sBlind == game->pDealer) {
-            game->pDealer = get_active_player(game->players, game->player_count, game->pDealer, CLOCKWISE);
-        }
-
-        game->sBlind = game->pDealer;
-        game->bBlind = get_active_player(
-            game->players, game->player_count,
-            game->sBlind, CLOCKWISE
-        );
+        heads_up(game);
     } else {
         // Normalfall mit mind. 3 Spielern
         game->pDealer = get_active_player(game->players, game->player_count, game->pDealer, CLOCKWISE);
