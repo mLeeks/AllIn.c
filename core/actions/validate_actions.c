@@ -2,7 +2,7 @@
 // Created by Maxe on 06.11.2026.
 //
 
-#include "actions.h"
+#include "validate_actions.h"
 
 static bool is_betting_phase(Phase phase) {
     return phase == PRE_FLOP ||

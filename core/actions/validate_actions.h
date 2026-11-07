@@ -8,7 +8,6 @@
 #include <stddef.h>
 #include "../game/game.h"
 
-#endif //ALLIN_C_ACTIONS_H
 
 typedef enum {
     CALL,
@@ -24,4 +23,6 @@ typedef struct {
     size_t amount;
 } GameAction;
 
-bool is_valid_action(Game *game, GameAction action);
+bool execute_action(Game *game, GameAction *game_action, Player *action_player);
+
+#endif //ALLIN_C_ACTIONS_H
