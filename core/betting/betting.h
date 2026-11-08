@@ -16,3 +16,4 @@ void init_betting_state(GameConfig *config, BettingState *state);
 bool betting_can_raise(BettingState *betting, size_t player_index);
 
 void save_action(BettingState *betting, Player *players, Player *action_player);
+void reset_betting(BettingState *betting, GameConfig *config);

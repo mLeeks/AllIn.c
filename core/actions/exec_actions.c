@@ -3,14 +3,13 @@
 //
 
 #include "exec_actions.h"
-#include "validate_actions.h"
 
 
 //
 // Created by Maxe on 06.11.2026.
 //
 
-static bool execute_call(Game *game, Player *action_player) {
+static void execute_call(Game *game, Player *action_player) {
 
     int to_call = game->betting.current_bet - action_player->current_bet;
 
@@ -29,10 +28,9 @@ static bool execute_call(Game *game, Player *action_player) {
     action_player->current_bet += bet;
     action_player->total_bet += bet;
 
-    return true;
 }
 
-static bool execute_raise(Game *game, Player *player, size_t amount) {
+static void execute_raise(Game *game, Player *player, size_t amount) {
     int difference = amount - player->current_bet;
 
     int raise_increment =
@@ -52,29 +50,29 @@ static bool execute_raise(Game *game, Player *player, size_t amount) {
 
     game->betting.current_bet = amount;
 
-    return true;
 }
 
-static bool execute_bet(Game *game, Player *action_player, size_t amount) {
-    bool result = execute_raise(game, action_player, amount);
-
-    return result;
+static void execute_bet(Game *game, Player *action_player, size_t amount) {
+    execute_raise(game, action_player, amount);
 };
 
-static bool execute_fold(Game *game, Player *action_player) {
+static void execute_fold(Game *game, Player *action_player) {
     action_player->state = FOLDED;
     if (get_active_player_count(game->players, game->player_count) < 2) {
         game->phase = GAME_HAND_FINISHED;
         game->win = BY_FOLD;
     }
-    return true;
 }
 
-static bool execute_check() {
+static void execute_check() {
     // Nothing to do here
-    return true;
 
 };
+
+void execute_show(Game *game) {
+    game->pCurrentPlayer->state = SHOWING;
+    game->betting.has_acted[game->pCurrentPlayer - game->players] = true;
+}
 
 bool is_wettrunden_end(Game *game) {
 
@@ -109,43 +107,17 @@ bool is_wettrunden_end(Game *game) {
     return true;
 }
 
-bool execute_action(Game *game, GameAction *game_action, Player *action_player) {
-    // TODO: SHOW wird noch ignoriert
-    if (!game || !game_action || !action_player)
-        return false;
-
-    if (game->pCurrentPlayer != action_player)
-        return false;
-
-    if (!is_valid_action(game, game_action, action_player)) return false;
-
-    bool result = false;
-
+void execute_action(Game *game, GameAction *game_action, Player *action_player) {
     int amount = game_action->amount;
 
     switch (game_action->action) {
-        case CALL:  result = execute_call(game, action_player); break;
-        case RAISE: result = execute_raise(game, action_player, amount); break;
-        case FOLD:  result = execute_fold(game, action_player); break;
-        case BET:   result = execute_bet(game, action_player, amount); break;
-        case CHECK: result = execute_check(); break;
-        default:    result = false;
-    }
-
-    if (!result) {
-        return false;
+        case CALL:  execute_call(game, action_player); break;
+        case RAISE: execute_raise(game, action_player, amount); break;
+        case FOLD:  execute_fold(game, action_player); break;
+        case BET:   execute_bet(game, action_player, amount); break;
+        case CHECK: execute_check(); break;
+        case SHOW:  execute_show(game); break;
     }
 
     save_action(&game->betting, game->players, action_player);
-
-    if (is_wettrunden_end(game)) {
-        // TODO: Phasenwechsel
-        next_game_phase();
-        return true;
-    }
-
-    game->pCurrentPlayer = get_active_player(game->players, game->player_count, game->pCurrentPlayer, CLOCKWISE);
-
-
-    return result;
 }

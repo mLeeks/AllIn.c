@@ -90,3 +90,7 @@ void init_game(Game *game) {
     game->phase = PRE_FLOP;
     setup_flop(game);
 }
+
+void manage_game_flow(Game *game) {
+    
+}

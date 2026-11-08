@@ -44,3 +44,10 @@ void save_action(BettingState *betting, Player *players, Player *action_player) 
         betting->current_bet;
 }
 
+void reset_betting(BettingState *betting, GameConfig *config) {
+    memset(betting->has_acted, false, 10);
+    memset(betting->last_acted_bet, 0, 10);
+    betting->current_bet = 0;
+    betting->min_raise = config->big_blind;
+}
+

@@ -86,3 +86,10 @@ Player  *get_only_active_player(Player *players, size_t num_players) {
   }
   return NULL;
 }
+
+void reset_bets(Player *players, size_t num_players) {
+  for (size_t i = 0; i < num_players; i++) {
+    players[i].current_bet = 0;
+  }
+}
+

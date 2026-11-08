@@ -15,6 +15,7 @@ typedef enum {
     ACTIVE,
     FOLDED,
     ALL_IN,
+    SHOWING,
     OUT
 } PlayerState;
 
@@ -58,3 +59,5 @@ Player *get_active_player(
 uint8_t get_active_player_count(Player *players, size_t num_players);
 uint8_t get_only_active_player_count(Player *players, size_t num_players);
 Player  *get_only_active_player(Player *players, size_t num_players);
+void reset_bets(Player *players, size_t num_players);
+Player *get_next_showdown_player(Game *game);

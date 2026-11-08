@@ -56,3 +56,4 @@ void destroy_game(Game *game);
 void start_game(Game *game);
 
 void setup_flop(Game *game);
+void manage_game_flow(Game *game);

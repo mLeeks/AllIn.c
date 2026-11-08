@@ -1,3 +1,4 @@
+#pragma once
 #include "../player/player.h"
 #include "../game/game.h"
 #include <stdint.h>

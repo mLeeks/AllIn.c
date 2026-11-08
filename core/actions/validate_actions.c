@@ -96,8 +96,16 @@ static bool validate_check(Game *game) {
     if (game->phase != PRE_FLOP && game->phase != FLOP && game->phase != TURN && game->phase != RIVER ) {return false;}
     if (game->betting.current_bet != game->pCurrentPlayer->current_bet) return false;
     return true;
-
 };
+
+static bool validate_show(Game *game) {
+    // Alle Spieler die Zeigen müssen, bekommen has_acted bei SHOWDOWN_INIT = true gesetzt
+    if (game->phase != SHOWDOWN) {return false;}
+    const ptrdiff_t p_index = game->pCurrentPlayer - game->players;
+    if (game->betting.has_acted[p_index] == true) {return false;}
+
+    return true;
+}
 
 bool is_valid_action(Game *game, GameAction *game_action, Player *action_player) {
     if (!game || !game_action || !action_player)
@@ -114,6 +122,7 @@ bool is_valid_action(Game *game, GameAction *game_action, Player *action_player)
         case FOLD:  return validate_fold(game);
         case BET:   return validate_bet(game, amount);
         case CHECK: return validate_check(game);
+        case SHOW: return validate_show(game);
         default:    return false;
     }
 }

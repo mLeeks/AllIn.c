@@ -4,25 +4,16 @@
 
 #ifndef ALLIN_C_ACTIONS_H
 #define ALLIN_C_ACTIONS_H
+
 #include <stdbool.h>
-#include <stddef.h>
 #include "../game/game.h"
-
-
-typedef enum {
-    CALL,
-    RAISE,
-    FOLD,
-    BET,
-    CHECK,
-    SHOW
-} Action;
-
-typedef struct {
-    Action action;
-    size_t amount;
-} GameAction;
-
-bool execute_action(Game *game, GameAction *game_action, Player *action_player);
+# include "action.h"
 
 #endif //ALLIN_C_ACTIONS_H
+
+
+
+
+
+bool is_valid_action(Game *game, GameAction *game_action, Player *action_player);
+
