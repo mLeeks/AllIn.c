@@ -92,5 +92,88 @@ void init_game(Game *game) {
 }
 
 void manage_game_flow(Game *game) {
-    
+    while (true) {
+
+        // Spiel vollständig beendet oder Rebuy-Phase aktiv.
+        // Rebuy-Entscheidungen werden separat verarbeitet.
+        if (game->phase == GAME_END ||
+            game->phase == GAME_REBUY)
+            return;
+
+        if (game->phase == GAME_HAND_FINISHED) {
+            // Wechselt zu GAME_REBUY und initialisiert die
+            // Rebuy-Entscheidungen der berechtigten Spieler.
+            // Die Hand muss bereits vollständig abgerechnet sein.
+            setup_rebuy(game);
+            return;
+        }
+
+        if (game->phase == SHOWDOWN) {
+            // Verarbeitet die SHOW-/MUCK-Reihenfolge.
+            // Bei verpflichtendem Aufdecken (All-in) automatisch.
+            //
+            // Rückgabe true:
+            //   Es wird auf eine Spielerentscheidung gewartet.
+            //
+            // Rückgabe false:
+            //   Showdown abgeschlossen, Phase wurde auf
+            //   GAME_HAND_FINISHED gesetzt.
+            if (manage_showdown(game))
+                return;
+
+            continue;
+        }
+
+        // Zählt alle Spieler, die noch an dieser Hand teilnehmen:
+        // ACTIVE und ALL_IN, nicht FOLDED oder OUT.
+        if (count_players_in_hand(game) == 1) {
+
+            // Der einzige verbliebene Spieler gewinnt ohne Showdown.
+            // Hand abrechnen und GAME_HAND_FINISHED setzen.
+            finish_hand_by_fold(game);
+            continue;
+        }
+
+        // Prüft, ob alle erforderlichen Aktionen der aktuellen
+        // Setzrunde abgeschlossen sind.
+        if (!is_wettrunden_end(game)) {
+
+            // Ermittelt den nächsten ACTIVE-Spieler, der noch
+            // eine Aktion ausführen muss.
+            // Berücksichtigt Sitzreihenfolge, offene Einsätze
+            // und has_acted.
+            game->pCurrentPlayer =
+                get_next_player_to_act(game);
+
+            return; // Warten auf Spieleraktion
+        }
+
+        // Prüft, ob in dieser Hand überhaupt noch weitere
+        // Setzaktionen zwischen mindestens zwei Spielern
+        // möglich sind.
+        // Beispiel false: Alle ALL_IN oder nur noch ein ACTIVE.
+        if (!can_any_more_betting_occur(game)) {
+
+            // Verpflichtend aufzudeckende Hände aufdecken,
+            // fehlende Boardkarten bis zum River austeilen
+            // und anschließend SHOWDOWN setzen.
+            runout_board_and_start_showdown(game);
+            continue;
+        }
+
+        // Wechselt zur nächsten Phase:
+        // PRE_FLOP -> FLOP -> TURN -> RIVER -> SHOWDOWN.
+        // Verändert zunächst nur game->phase.
+        advance_game_phase(game);
+
+        // Bereitet die neue Phase vor:
+        // - ggf. Boardkarten austeilen
+        // - Setzrundenwerte zurücksetzen
+        // - ersten Spieler der neuen Setzrunde festlegen
+        // - Showdown initialisieren, falls erreicht
+        setup_current_phase(game);
+
+        // Neue Phase erneut prüfen:
+        // Spieleraktion notwendig oder automatischer Fortschritt?
+    }
 }
