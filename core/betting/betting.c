@@ -37,8 +37,10 @@ bool betting_can_raise(BettingState *betting, size_t player_index) {
                >= betting->min_raise;
 }
 
-void save_action(BettingState *betting, size_t player_index) {
-    betting->has_acted[player_index] = true;
-    betting->last_acted_bet[player_index] =
+void save_action(BettingState *betting, Player *players, Player *action_player) {
+    ptrdiff_t index = action_player - players;
+    betting->has_acted[index] = true;
+    betting->last_acted_bet[index] =
         betting->current_bet;
 }
+

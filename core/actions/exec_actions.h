@@ -9,5 +9,6 @@
 
 
 bool execute_action(Game *game, GameAction *game_action, Player *action_player);
+bool is_wettrunden_end();
 
 #endif //ALLIN_C_EXEC_ACTIONS_H

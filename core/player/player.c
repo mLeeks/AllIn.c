@@ -67,3 +67,22 @@ uint8_t get_active_player_count(Player *players, size_t num_players) {
   }
   return count;
 }
+
+uint8_t get_only_active_player_count(Player *players, size_t num_players) {
+  uint8_t count = 0;
+  for (size_t i = 0; i < num_players; i++) {
+    if (players[i].state == ACTIVE) {
+      count++;
+    }
+  }
+  return count;
+}
+
+Player  *get_only_active_player(Player *players, size_t num_players) {
+  for (size_t i = 0; i < num_players; i++) {
+    if (players[i].state == ACTIVE) {
+      return &players[i];
+    }
+  }
+  return NULL;
+}

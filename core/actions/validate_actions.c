@@ -26,25 +26,42 @@ static bool validate_call(Game *game) {
     return to_call > 0 && player->chips > 0;
 }
 
-static bool validate_raise(Game *game, size_t amount) {
-    if (!is_betting_phase(game->phase)) {return false;}
-    if (game->pCurrentPlayer->chips < amount) {return false;}
-    if (game->betting.current_bet == 0) {return false;}
-    const int new_bet = game->pCurrentPlayer->current_bet + amount;
-
-    if (new_bet <= game->betting.current_bet)
+static bool validate_raise(Game *game, int amount) {
+    if (get_only_active_player_count(
+        game->players,
+        game->player_count) < 2)
         return false;
 
-    if (new_bet < game->betting.current_bet
-                  + game->betting.min_raise &&
-        amount != game->pCurrentPlayer->chips)
+    if (!is_betting_phase(game->phase))
         return false;
 
-    if (!betting_can_raise(&game->betting, game->pCurrentPlayer - game->players)) {return false;}
+    Player *player = game->pCurrentPlayer;
+
+    if (game->betting.current_bet == 0)
+        return false;
+
+    // Betrag bezeichnet den neuen Gesamteinsatz
+    if (amount <= game->betting.current_bet)
+        return false;
+
+    int difference = amount - player->current_bet;
+
+    if (difference > player->chips)
+        return false;
+
+    // Unvollständiger Raise nur bei All-in
+    if (amount < game->betting.current_bet
+                 + game->betting.min_raise &&
+        difference != player->chips)
+        return false;
+
+    size_t index = player - game->players;
+
+    if (!betting_can_raise(&game->betting, index))
+        return false;
 
     return true;
-
-};
+}
 
 static bool validate_fold(Game *game) {
     if (!is_betting_phase(game->phase)) {return false;}
@@ -52,6 +69,11 @@ static bool validate_fold(Game *game) {
 };
 
 static bool validate_bet(Game *game, int amount) {
+    if (get_only_active_player_count(
+        game->players,
+        game->player_count) < 2)
+        return false;
+
     if (!is_betting_phase(game->phase))
         return false;
 

@@ -56,3 +56,5 @@ Player *get_active_player(
 );
 
 uint8_t get_active_player_count(Player *players, size_t num_players);
+uint8_t get_only_active_player_count(Player *players, size_t num_players);
+Player  *get_only_active_player(Player *players, size_t num_players);

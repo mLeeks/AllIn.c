@@ -5,7 +5,6 @@
 typedef struct {
     int current_bet;
     int min_raise;
-    Player *pLastRaiser;
     bool has_acted[10]; // Speichert pro Setzrunde wer eine Aktion durchgeführt hat
     size_t last_acted_bet[10]; // Speichert pro Setzrunde den letzten Einsatz, der jeweiligen Spieler
 
@@ -15,3 +14,5 @@ typedef struct {
 void init_betting_state(GameConfig *config, BettingState *state);
 
 bool betting_can_raise(BettingState *betting, size_t player_index);
+
+void save_action(BettingState *betting, Player *players, Player *action_player);
