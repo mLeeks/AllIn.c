@@ -1,15 +1,14 @@
-#include <uuid/uuid.h>
-#include <stdio.h>
-
 #include "player.h"
 
 #include <stdlib.h>
 
+#include "../game/game.h"
+
 
 void reset_player(Player *player) {
   player->state = player->chips > 0 ? ACTIVE : OUT;
-  player->cards[0] = (Card){0};
-  player->cards[1] = (Card){0};
+  player->cards[0] = placeholder_card;
+  player->cards[1] = placeholder_card;
   player->current_bet = 0;
   player->total_bet = 0;
   player->rebuy_done = false;
@@ -18,8 +17,8 @@ void reset_player(Player *player) {
 void init_player(GameConfig *config, Player *player) {
   player->state = ACTIVE;
   player->chips = config->buy_in;
-  player->cards[0] = (Card){0};
-  player->cards[1] = (Card){0};
+  player->cards[0] = placeholder_card;
+  player->cards[1] = placeholder_card;
   player->current_bet = 0;
   player->total_bet = 0;
   player->rebuy_done = false;

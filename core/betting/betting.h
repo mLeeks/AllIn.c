@@ -1,6 +1,11 @@
 #pragma once
-#include "../player/player.h"
+#include <stdbool.h>
+#include <stddef.h>
 
+#include "../player/player.h"
+#include "../game/game.h"
+
+struct GameConfig;
 
 typedef struct {
     int current_bet;
@@ -11,9 +16,10 @@ typedef struct {
 } BettingState;
 
 
-void init_betting_state(GameConfig *config, BettingState *state);
+void init_betting_state(struct GameConfig *config, BettingState *state);
 
 bool betting_can_raise(BettingState *betting, size_t player_index);
 
 void save_action(BettingState *betting, Player *players, Player *action_player);
-void reset_betting(BettingState *betting, GameConfig *config);
+void reset_betting(BettingState *betting, struct GameConfig *config);
+void setup_betting_round(Game *game, size_t amount_burn_cards, size_t amount_draw_cards);

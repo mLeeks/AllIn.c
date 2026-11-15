@@ -4,12 +4,15 @@
 
 #ifndef ALLIN_C_EXEC_ACTIONS_H
 #define ALLIN_C_EXEC_ACTIONS_H
+
+#include <stdbool.h>
+
 #include "../game/game.h"
 #include "action.h"
 
 
 
 void execute_action(Game *game, GameAction *game_action, Player *action_player);
-bool is_wettrunden_end();
+bool is_wettrunden_end(Game *game);
 
 #endif //ALLIN_C_EXEC_ACTIONS_H

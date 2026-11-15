@@ -1,9 +1,7 @@
-
-#include <stdbool.h>
 #include "game_view.h"
-#include "../game/game.h"
-#include "../actions/validate_actions.h"
+
 #include "../actions/exec_actions.h"
+#include "../actions/validate_actions.h"
 
 bool send_action(Game *game, GameAction *action, Player *action_player) {
     // Pointer Checks

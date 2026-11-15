@@ -3,7 +3,14 @@ project(AllIn_c C)
 
 set(CMAKE_C_STANDARD 17)
 
-add_executable(AllIn_c main.c)
+add_executable(AllIn_c
+        main.c
+        core/game/game.c
+        core/player/player.c
+        core/cards/cards.c
+        core/betting/betting.c
+        core/actions/exec_actions.c
+)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SODIUM REQUIRED IMPORTED_TARGET libsodium)

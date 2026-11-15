@@ -1,10 +1,13 @@
 #pragma once
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <uuid/uuid.h>
 
 #include "../cards/cards.h"
-#include <uuid/uuid.h>
-#include "../game/game.h"
 
+struct Game;
+struct GameConfig;
 
 typedef enum {
     ANTI_CLOCKWISE = -1,
@@ -37,9 +40,9 @@ typedef struct {
  * @param name
  * @param starting_chips
  */
-void init_player(GameConfig *config, Player *players);
+void init_player(struct GameConfig *config, Player *players);
 
-void init_players(GameConfig *config, Player *player, size_t num_players);
+void init_players(struct GameConfig *config, Player *player, size_t num_players);
 
 /**
  * @brief Bereitet den Player für die nächste Hand vor.
@@ -60,4 +63,4 @@ uint8_t get_active_player_count(Player *players, size_t num_players);
 uint8_t get_only_active_player_count(Player *players, size_t num_players);
 Player  *get_only_active_player(Player *players, size_t num_players);
 void reset_bets(Player *players, size_t num_players);
-Player *get_next_showdown_player(Game *game);
+Player *get_next_showdown_player(struct Game *game);

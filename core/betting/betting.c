@@ -2,10 +2,11 @@
 
 #include <string.h>
 
+#include "../game/game.h"
+
 void init_betting_state(GameConfig *config, BettingState *state) {
     state->min_raise = config->big_blind;
     state->current_bet = 0;
-    state->pLastRaiser = NULL;
     memset(state->has_acted, false, 10);
     memset(state->last_acted_bet, 0, 10);
 };
@@ -42,6 +43,22 @@ void save_action(BettingState *betting, Player *players, Player *action_player) 
     betting->has_acted[index] = true;
     betting->last_acted_bet[index] =
         betting->current_bet;
+}
+
+void setup_betting_round(Game *game, size_t amount_burn_cards, size_t amount_draw_cards) {
+    if (game->phase != FLOP && game->phase != TURN && game->phase != RIVER) {return;}
+
+    draw_n_cards(&game->deck, game->board.burn_cards, game->board.bCount, amount_burn_cards);
+    draw_n_cards(&game->deck, game->board.cards, game->board.count, amount_draw_cards);
+    game->board.bCount += amount_burn_cards;
+    game->board.count += amount_draw_cards;
+
+    if (game->phase == FLOP) {
+        game->pStartingPlayer = get_active_player(game->players, game->player_count, game->pDealer, CLOCKWISE);
+    }
+
+    game->pCurrentPlayer = game->pStartingPlayer;
+
 }
 
 void reset_betting(BettingState *betting, GameConfig *config) {

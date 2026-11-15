@@ -1,6 +1,8 @@
 #include "cards.h"
 #include <sodium.h>
 
+const Card placeholder_card = {.suit = PLACEHOLDER};
+
 void shuffle_deck(Deck *deck) {
     deck->next_card = 0;
     for (int i = 51; i > 0; i--) {
@@ -26,21 +28,22 @@ void init_deck(Deck *deck) {
 
 void init_board(Board *board) {
     for (size_t i = 0; i < 4; i++) {
-        board->cards[i] = (Card){0};
+        board->cards[i] = placeholder_card;
     }
     board->count = 0;
+    board->bCount = 0;
 
     for (size_t i = 0; i < 2; i++) {
-        board->burn_cards[i] = (Card){0};
+        board->burn_cards[i] = placeholder_card;
     }
 }
 
-bool draw_n_cards(Deck *deck, Card *cards, size_t n) {
-    if (n == 0 || deck->next_card > 52 ||
+bool draw_n_cards(Deck *deck, Card *cards, size_t start_n, size_t n) {
+    if (n == 0 || start_n == 0 || deck->next_card > 52 ||
         n > 52 - deck->next_card)
         return false;
 
-    for (size_t i = 0; i < n; i++) {
+    for (size_t i = start_n; i < n; i++) {
         cards[i] = deck->cards[deck->next_card++];
     }
 

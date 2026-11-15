@@ -1,14 +1,10 @@
 #pragma once
-#include "../player/player.h"
-#include "../game/game.h"
+#include <stdbool.h>
 #include <stdint.h>
 
-/**
- * Initializes preFilled Game
- * @param game
- * @return bool
- */
-bool init_game(Game *game);
+#include "../actions/action.h"
+#include "../game/game.h"
+#include "../player/player.h"
 
 /**
  * @brief Free Game memory

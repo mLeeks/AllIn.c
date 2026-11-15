@@ -2,13 +2,15 @@
 
 #include <stdio.h>
 
+#include "../actions/exec_actions.h"
+
 static void setup_cards(Deck *deck, Player *players, uint8_t player_count) {
     for (uint8_t i = 0; i < player_count; i++) {
         if (players[i].state != ACTIVE && players[i].state != ALL_IN) {
             continue;
         }
 
-        draw_n_cards(&deck[0], players[i].cards, 1);
+        draw_n_cards(deck, &players[i].cards[0], 0, 1);
     }
 
     for (uint8_t i = 0; i < player_count; i++) {
@@ -16,7 +18,7 @@ static void setup_cards(Deck *deck, Player *players, uint8_t player_count) {
             continue;
         }
 
-        draw_n_cards(&deck[1], players[i].cards, 1);
+        draw_n_cards(deck, &players[i].cards[1], 0, 1);
     }
 }
 
@@ -46,6 +48,8 @@ static void heads_up(Game *game) {
         game->pDealer,
         CLOCKWISE
     );
+
+    game->pCurrentPlayer = game->pDealer;
 }
 
 void setup_flop(Game *game) {
@@ -83,14 +87,22 @@ void init_game(Game *game) {
     init_players(&game->config, game->players, game->player_count);
     init_deck(&game->deck);
     init_board(&game->board);
-    init_betting_state(&game->config, game->betting);
+    init_betting_state(&game->config, &game->betting);
     game->win = NONE;
     game->pDealer = get_random_dealer(game->players, game->player_count);
-    game->pCurrentPlayer = NULL;
+    game->sBlind = game->pDealer;
+
+    game->bBlind = get_active_player(
+        game->players,
+        game->player_count,
+        game->pDealer,
+        CLOCKWISE
+    );
+    game->pCurrentPlayer = game->pDealer;
     game->phase = PRE_FLOP;
     setup_flop(game);
 }
-
+/*
 void manage_game_flow(Game *game) {
     while (true) {
 
@@ -177,3 +189,4 @@ void manage_game_flow(Game *game) {
         // Spieleraktion notwendig oder automatischer Fortschritt?
     }
 }
+*/

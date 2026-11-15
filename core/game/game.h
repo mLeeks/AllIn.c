@@ -1,8 +1,10 @@
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
-#include "../player/player.h"
+
 #include "../betting/betting.h"
+#include "../cards/cards.h"
+#include "../player/player.h"
 
 typedef enum {
     WAITING,
@@ -23,7 +25,7 @@ typedef enum {
 } Win;
 
 
-typedef struct {
+typedef struct GameConfig {
     uint8_t ai_count;
     int big_blind;
     int small_blind;
@@ -32,7 +34,7 @@ typedef struct {
 
 } GameConfig;
 
-typedef struct {
+typedef struct Game {
     Player players[10];
     uint8_t player_count;
     Deck deck;
@@ -49,6 +51,10 @@ typedef struct {
 
 } Game;
 
+/**
+ * Initializes preFilled Game
+ * @param game
+ */
 void init_game(Game *game);
 
 void create_game(Game *game);

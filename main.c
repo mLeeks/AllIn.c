@@ -1,19 +1,37 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <sodium/core.h>
+#include <string.h>
+
+#include "core/game_view/game_view.h"
 
 int main(void) {
-    // INIT
-    // - init CSPRNG
-    if (sodium_init() < 0) {
-        return 1;
+    Player players[10] = {
+        {.name = "Alice"},
+        {.name = "Bob"},
+        {.name = "Charlie"}
+    };
+
+    for (int i = 0; i < 10; i++) {
+        uuid_generate_random(players[i].uuid);
     }
-    // - init srand
-    srand((unsigned int)time(NULL));
 
 
+    GameConfig config = {2, 250, 125, 2000, false};
+    Game game = {.config = config, .player_count = 2, .phase=PRE_FLOP};
 
-    printf("Hello, World!\n");
-    return 0;
+    memcpy(game.players, players, sizeof(players));
+
+    // -----------------------------------------------------------------------------------
+
+
+    init_game(&game);
+    /// wettrunden loop:
+    ///     - get_current_player
+    ///     - send aufforderung irwas zu machen
+    ///     - warten
+    ///     - spieler hat was gemacht
+    ///     - wettrunde zuende?:
+    ///         game_end? -->(ja) end;
+    ///         next_wettrunde
+    printf("\n");
+
 }

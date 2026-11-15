@@ -31,6 +31,8 @@ typedef struct {
     Suit suit;
 } Card;
 
+extern const Card placeholder_card;
+
 typedef struct {
     Card cards[52];
     size_t next_card;
@@ -41,6 +43,7 @@ typedef struct {
     size_t count;
 
     Card burn_cards[3];
+    size_t bCount;
 } Board;
 
 /**
@@ -67,5 +70,5 @@ void shuffle_deck(Deck *deck);
  * @return false, wenn die Parameter ungültig sind
  *         oder nicht genügend Karten vorhanden sind.
  */
-bool draw_n_cards(Deck *deck, Card *cards, size_t n);
+bool draw_n_cards(Deck *deck, Card *cards, size_t start_n, size_t n);
 
