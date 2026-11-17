@@ -63,3 +63,4 @@ void start_game(Game *game);
 
 void setup_flop(Game *game);
 void manage_game_flow(Game *game);
+bool is_betting_end(Game *game);

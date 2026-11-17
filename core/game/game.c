@@ -102,6 +102,23 @@ void init_game(Game *game) {
     game->phase = PRE_FLOP;
     setup_flop(game);
 }
+
+bool is_betting_end(Game *game) {
+    bool beven_player_raise = even_player_raise(&game->betting, game->player_count, game->players);
+    bool bIs_everyone_all_in = is_everyone_all_in(&game->betting, game->player_count, game->players);
+    bool bEvery_player_acted = every_player_acted(&game->betting, game->player_count, game->players);
+    bool fold_win = game->win == BY_FOLD;
+
+    return (bEvery_player_acted && beven_player_raise || bIs_everyone_all_in || fold_win);
+}
+
+bool is_game_end(Game *game) {
+    bool fold_win = game->win == BY_FOLD;
+    bool showdown_win = game->win == BY_SHOWDOWN;
+
+    return (fold_win || showdown_win);
+}
+
 /*
 void manage_game_flow(Game *game) {
     while (true) {
